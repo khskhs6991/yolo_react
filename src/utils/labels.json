@@ -1,0 +1,20 @@
+[
+  "nothing",
+  "pedestrian",
+  "person on vehicle",
+  "car",
+  "bicycle",
+  "motorbike",
+  "non motorized vehicle",
+  "static person",
+  "distractor",
+  "occluder",
+  "occluder on the ground",
+  "occluder full",
+  "reflection",
+  "bus",
+  "scooter",
+  "bench",
+  "traffic_light",
+  "bollard"  
+]
