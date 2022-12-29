@@ -34,6 +34,8 @@ const App = () => {
         }
       ); // load model
 
+      console.log(yolov5.inputs[0].shape);
+
       // warming up model
       const dummyInput = tf.ones(yolov5.inputs[0].shape);
       const warmupResult = await yolov5.executeAsync(dummyInput);
@@ -79,7 +81,7 @@ const App = () => {
           ref={videoRef}
           onPlay={() => detectVideo(videoRef.current, model, classThreshold, canvasRef.current)}
         />
-        <canvas width={model.inputShape[1]} height={model.inputShape[2]} ref={canvasRef} />
+        <canvas width={1920} height={1080} ref={canvasRef} />
       </div>
 
       <ButtonHandler imageRef={imageRef} cameraRef={cameraRef} videoRef={videoRef} />

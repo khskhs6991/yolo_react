@@ -34,6 +34,9 @@ export const renderBoxes = (
   ctx.font = font;
   ctx.textBaseline = "top";
   let count = 0;
+  let nowtime = 0;
+  let comparetime = new Date();
+  
 
   for (let i = 0; i < scores_data.length; ++i) {
     // filter based on class threshold
@@ -61,27 +64,32 @@ export const renderBoxes = (
       const center_x = x1 + width / 2;
       const center_y = y1 + height / 2;
 
-
       if (klass == 'pedestrian'){
+        nowtime = new Date();
+        console.log(nowtime);
+        console.log(comparetime);
         if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8) && (height >= ctx.canvas.height * 0.5)){
           count += 1;
-          console.log(count);
-          if (count >= 3){
-            warningAudio.play()
-            console.log("warningAudio");
+          const difftime = (nowtime.getTime() - comparetime.getTime());
+          console.log(difftime);
+          if ((count >= 3) && difftime >= 2){
+              warningAudio.play();
+              console.log("warningAudio");
+              comparetime = new Date();
           }
-          else if(height >= ctx.canvas.height * 0.8){
-            warnAudio.play()
-            console.log("warnAudio");
+          else if((height >= ctx.canvas.height * 0.9) && (difftime >= 2) && (warningAudio.currentTime == 0)){
+              warnAudio.play();
+              console.log("warnAudio");
+              comparetime = new Date();
           }
         }
 
-        if (warningAudio.currentTime > 2){
+        if (warningAudio.currentTime > 3){
           warningAudio.pause();
           warningAudio.currentTime = 0;
         }
 
-        if(warnAudio.currentTime > 2){
+        if(warnAudio.currentTime > 0){
           warnAudio.pause();
           warnAudio.currentTime = 0;
         }

@@ -38,8 +38,8 @@
 .content > video {
   display: none;
   width: 100%;
-  max-width: 720px;
-  max-height: 500px;
+  max-width: 1920px;
+  max-height: 1080px;
   border-radius: 10px;
 }
 
