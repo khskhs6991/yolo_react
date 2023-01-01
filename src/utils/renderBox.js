@@ -10,9 +10,6 @@ import labels from "./labels.json";
  * @param {Array[Number]} ratios boxes ratio [xRatio, yRatio]
  */
 
-let warncheck = 3;
-let warningcheck = 3;
-
 export const renderBoxes = (
   soundcheck,
   canvasRef,
@@ -71,16 +68,16 @@ export const renderBoxes = (
       if (klass == 'pedestrian'){
         if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
           count += 1;
-          if ((count >= 3) && (soundcheck % 6 == 0)){
+          if ((count >= 3) && (soundcheck % 5 == 0)){
             warningAudio.play();
             console.log("warningAudio");
           }
-        else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.9)){
-          if (soundcheck % 3 == 0){
-            warnAudio.play();
-            console.log("warnAudio");
+          else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.9)){
+            if ((soundcheck % 3 == 0)){
+              warnAudio.play();
+              console.log("warnAudio");
+              }
             }
-          }
         }
 
       }
