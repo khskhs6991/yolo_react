@@ -69,7 +69,7 @@ export const detectImage = async (imgSource, model, classThreshold, canvasRef) =
  */
 export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
-
+  let soundcheck = 3;
   /**
    * Function to detect every frame from video
    */
@@ -88,10 +88,11 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
       const boxes_data = boxes.dataSync();
       const scores_data = scores.dataSync();
       const classes_data = classes.dataSync();
-      renderBoxes(canvasRef, classThreshold, boxes_data, scores_data, classes_data, [
+      renderBoxes(soundcheck, canvasRef, classThreshold, boxes_data, scores_data, classes_data, [
         xRatio,
         yRatio,
       ]); // render boxes
+      soundcheck += 1;
       tf.dispose(res); // clear memory
     });
 

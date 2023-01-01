@@ -9,7 +9,12 @@ import labels from "./labels.json";
  * @param {Array} classes_data class array
  * @param {Array[Number]} ratios boxes ratio [xRatio, yRatio]
  */
+
+let warncheck = 3;
+let warningcheck = 3;
+
 export const renderBoxes = (
+  soundcheck,
   canvasRef,
   classThreshold,
   boxes_data,
@@ -34,8 +39,6 @@ export const renderBoxes = (
   ctx.font = font;
   ctx.textBaseline = "top";
   let count = 0;
-  let nowtime = 0;
-  let comparetime = new Date();
   
 
   for (let i = 0; i < scores_data.length; ++i) {
@@ -56,6 +59,7 @@ export const renderBoxes = (
       // draw box.
       ctx.fillStyle = Colors.hexToRgba(color, 0.2);
       ctx.fillRect(x1, y1, width, height);
+      ctx.strokeRect(ctx.canvas.width * 0.2, ctx.canvas.height * 0.5, ctx.canvas.width * 0.8 - ctx.canvas.width * 0.2, ctx.canvas.height * 0.5);
       // draw border box.
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(Math.min(ctx.canvas.width, ctx.canvas.height) / 200, 2.5);
@@ -65,34 +69,21 @@ export const renderBoxes = (
       const center_y = y1 + height / 2;
 
       if (klass == 'pedestrian'){
-        nowtime = new Date();
-        console.log(nowtime);
-        console.log(comparetime);
-        if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8) && (height >= ctx.canvas.height * 0.5)){
+        if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
           count += 1;
-          const difftime = (nowtime.getTime() - comparetime.getTime());
-          console.log(difftime);
-          if ((count >= 3) && difftime >= 2){
-              warningAudio.play();
-              console.log("warningAudio");
-              comparetime = new Date();
+          console.log(soundcheck);
+          if ((count >= 3) && (soundcheck % 6 == 0)){
+            warningAudio.play();
+            console.log("warningAudio");
           }
-          else if((height >= ctx.canvas.height * 0.9) && (difftime >= 2) && (warningAudio.currentTime == 0)){
-              warnAudio.play();
-              console.log("warnAudio");
-              comparetime = new Date();
+        else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.9)){
+          if (soundcheck % 3 == 0){
+            warnAudio.play();
+            console.log("warnAudio");
+            }
           }
         }
 
-        if (warningAudio.currentTime > 3){
-          warningAudio.pause();
-          warningAudio.currentTime = 0;
-        }
-
-        if(warnAudio.currentTime > 0){
-          warnAudio.pause();
-          warnAudio.currentTime = 0;
-        }
       }
 
       // Draw the label background.
