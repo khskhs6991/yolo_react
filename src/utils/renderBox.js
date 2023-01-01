@@ -71,7 +71,6 @@ export const renderBoxes = (
       if (klass == 'pedestrian'){
         if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
           count += 1;
-          console.log(soundcheck);
           if ((count >= 3) && (soundcheck % 6 == 0)){
             warningAudio.play();
             console.log("warningAudio");
