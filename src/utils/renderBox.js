@@ -11,6 +11,8 @@ import labels from "./labels.json";
  */
 
 export const renderBoxes = (
+  warningAudio,
+  warnAudio,
   soundcheck,
   canvasRef,
   classThreshold,
@@ -23,10 +25,6 @@ export const renderBoxes = (
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // clean canvas
 
   const colors = new Colors();
-  const warningAudio = new Audio();
-  const warnAudio = new Audio();
-  warningAudio.src = "ppip3.mp3";
-  warnAudio.src = "ppip.mp3";
 
   // font configs
   const font = `${Math.max(
@@ -65,21 +63,50 @@ export const renderBoxes = (
       const center_x = x1 + width / 2;
       const center_y = y1 + height / 2;
 
+      ctx.beginPath();
+      ctx.arc(center_x, center_y, 10, 0, 2 * Math.PI);
+      ctx.stroke();
+
       if (klass == 'pedestrian'){
         if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
           count += 1;
-          if ((count >= 3) && (soundcheck % 5 == 0)){
-            warningAudio.play();
-            console.log("warningAudio");
+          if ((count >= 3) && (soundcheck % 6 == 0)){
+            try {
+              warnAudio.pause();
+              warnAudio.currentTime = 0; 
+              warningAudio.play();
+              console.log("warningAudio");
+            } catch (error) {
+              console.log('재생되는 소리가 없습니다.');
+            }
           }
-          else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.9)){
-            if ((soundcheck % 3 == 0)){
-              warnAudio.play();
-              console.log("warnAudio");
+          else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.8)){
+            if (soundcheck % 4 == 0){
+              try {
+                warningAudio.pause();
+                warnAudio.currentTime = 0;
+                warnAudio.play();
+                console.log("warnAudio");
+              } catch (error) {
+                console.log('재생되는 소리가 없습니다.');
               }
             }
+          }
         }
-
+      }
+      else if (klass == 'car' || klass == 'bus' || klass == 'truck') {
+        if ((ctx.canvas.width * 0.45 <= center_x <= ctx.canvas.width * 0.55) && (height >= ctx.canvas.height * 0.15)){
+          console.log('차량이 전방에 있습니다.');
+        }
+        else if (y2 >= ctx.canvas.height * 0.7){
+          console.log('디폴트 값으로 차량이 있을 시 무조건 울립니다.');
+        }
+        else if ((center_x < 0.5) && (x2 <= ctx.canvas.width * 0.3) && (y2 <= ctx.canvas.height * 0.7) && (height >= ctx.canvas.height * 0.3)){
+          console.log('차량이 왼쪽 사이드에 있습니다.');
+        }
+        else if ((center_x >= 0.5) && (x1 >= ctx.canvas.width * 0.7) && (y2 <= ctx.canvas.height * 0.7) && (height >= ctx.canvas.height * 0.3)){
+          console.log('차량이 오른쪽 사이드에 있습니다.');
+        }
       }
 
       // Draw the label background.

@@ -34,8 +34,6 @@ const App = () => {
         }
       ); // load model
 
-      console.log(yolov5.inputs[0].shape);
-
       // warming up model
       const dummyInput = tf.ones(yolov5.inputs[0].shape);
       const warmupResult = await yolov5.executeAsync(dummyInput);
@@ -52,23 +50,26 @@ const App = () => {
 
   return (
     <div className="App">
-      {loading.loading && <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>}
+      {loading.loading && <Loader> APP 실행 준비 중 {(loading.progress * 100).toFixed(2)}%</Loader>}
       <div className="header">
-        <h1>📷 YOLOv5 Live Detection App</h1>
+        <img src= "https://github.com/JISOO0213/Visual_impairment_assistant/raw/main/VisuAl.png"/>
+        
+        {/* <h1>위험 감지 음성 출력 App</h1> */}
+        <br/>
         <p>
-          YOLOv5 live detection application on browser powered by <code>tensorflow.js</code>
+          실시간 장애물 탐지 앱 
         </p>
         <p>
-          Serving : <code className="code">{modelName}</code>
+          Serving : <code className="code">{modelName}+ 인도주행</code>
         </p>
+        <br/>
+        <p>
+          <b>이 서비스는 크롬에서 사용할 수 없습니다. 이거 왜 됨??</b>
+        </p>
+        <br/>
       </div>
 
       <div className="content">
-        <img
-          src="#"
-          ref={imageRef}
-          onLoad={() => detectImage(imageRef.current, model, classThreshold, canvasRef.current)}
-        />
         <video
           autoPlay
           muted
@@ -84,7 +85,7 @@ const App = () => {
         <canvas width={1920} height={1080} ref={canvasRef} />
       </div>
 
-      <ButtonHandler imageRef={imageRef} cameraRef={cameraRef} videoRef={videoRef} />
+      <ButtonHandler cameraRef={cameraRef} videoRef={videoRef} />
     </div>
   );
 };
