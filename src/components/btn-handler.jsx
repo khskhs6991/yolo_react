@@ -40,7 +40,7 @@ const ButtonHandler = ({cameraRef, videoRef }) => {
           if (streaming === null || streaming === "image") inputVideoRef.current.click();
           // closing video streaming
           else if (streaming === "video") closeVideo();
-          else alert(`Can't handle more than 1 stream\nCurrently streaming : ${streaming}`); // if streaming webcam
+          else alert(`웹캠을 끄고 실행해주세요. : ${streaming}`); // if streaming webcam
         }}
       >
         {streaming === "video" ? "Close" : "Open"} Video
@@ -62,7 +62,7 @@ const ButtonHandler = ({cameraRef, videoRef }) => {
             webcam.close(cameraRef.current);
             cameraRef.current.style.display = "none";
             setStreaming(null);
-          } else alert(`Can't handle more than 1 stream\nCurrently streaming : ${streaming}`); // if streaming video
+          } else alert(`비디오를 끄고 실행해주세요. : ${streaming}`); // if streaming video
         }}
       >
         {streaming === "camera" ? "Close" : "Open"} Webcam

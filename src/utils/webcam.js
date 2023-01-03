@@ -5,8 +5,12 @@ export class Webcam {
   /**
    * Open webcam and stream it through video tag.
    * @param {HTMLVideoElement} videoRef video tag reference
+   * 
+   * 권한쪽 문제? 
+   * 
    */
   open = (videoRef) => {
+    console.log(navigator.userAgent.toLowerCase());
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({
@@ -17,6 +21,7 @@ export class Webcam {
         })
         .then((stream) => {
           videoRef.srcObject = stream;
+          console.log(stream);
         });
     } else alert("카메라를 연결할 수 없습니다!");
   };
