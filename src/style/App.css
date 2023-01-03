@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap'); 
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
 
 .App {
   height: 100%;
@@ -8,7 +8,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 }
 
 .App > * {
@@ -25,10 +25,10 @@
 
 .code {
   padding: 5px;
-  color: greenyellow;
+  color: mediumaquamarine;
   background-color: black;
   border-radius: 5px;
-  font-family: 'Do Hyeon', sans-serif;
+  font-family: "Do Hyeon", sans-serif;
 }
 
 .content > img {
@@ -62,16 +62,19 @@
 button {
   text-decoration: none;
   color: white;
-  background-color: black;
-  border: 2px solid black;
+  background-color: white;
+  border: 2px solid white;
   margin: 0 5px;
   padding: 5px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-button:hover {
+/* button:hover {
   color: black;
   background-color: white;
   border: 2px solid black;
-}
+} */
+
+
+

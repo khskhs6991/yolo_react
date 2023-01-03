@@ -72,8 +72,8 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
   let soundcheck = 4;
   const warningAudio = new Audio();
   const warnAudio = new Audio();
-  warningAudio.src = "https://github.com/khskhs6991/yolo_react/raw/master/ppip3.mp3";
-  warnAudio.src = "https://github.com/khskhs6991/yolo_react/raw/master/ppip.mp3";
+  warningAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/ppip3.mp3";
+  warnAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/ppip.mp3";
   /**
    * Function to detect every frame from video
    */

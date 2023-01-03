@@ -68,23 +68,21 @@ export const renderBoxes = (
       // ctx.stroke();
 
       if (klass == 'pedestrian'){
-        if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
+        if ((center_y >= ctx.canvas.height * 0.45) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
           count += 1;
           if ((count >= 3) && (soundcheck % 6 == 0)){
             try {
               warnAudio.pause();
-              warnAudio.currentTime = 0; 
               warningAudio.play();
               console.log("warningAudio");
             } catch (error) {
               console.log('재생되는 소리가 없습니다.');
             }
           }
-          else if((center_y >= ctx.canvas.height * 0.5) && (height >= ctx.canvas.height * 0.8)){
+          else if((center_y >= ctx.canvas.height * 0.45) && (height >= ctx.canvas.height * 0.75)){
             if (soundcheck % 4 == 0){
               try {
                 warningAudio.pause();
-                warnAudio.currentTime = 0;
                 warnAudio.play();
                 console.log("warnAudio");
               } catch (error) {
