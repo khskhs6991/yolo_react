@@ -10,8 +10,8 @@ export class Webcam {
    * 
    */
   open = (videoRef) => {
-    console.log(navigator.userAgent.toLowerCase());
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    if (navigator.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({
           audio: false,
@@ -21,9 +21,13 @@ export class Webcam {
         })
         .then((stream) => {
           videoRef.srcObject = stream;
-          console.log(stream);
-        });
-    } else alert("카메라를 연결할 수 없습니다!");
+          videoRef.onloadedmetadata = function(e){videoRef.onplay();};
+        }).catch(function(e){
+          console.log("error: " + e);
+        })
+    } else {
+      console.log("getUserMedia() not available.");
+    }
   };
 
   /**

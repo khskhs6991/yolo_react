@@ -14,7 +14,6 @@ const App = () => {
   }); // init model & input shape
 
   // references
-  const imageRef = useRef(null);
   const cameraRef = useRef(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -47,47 +46,48 @@ const App = () => {
       }); // set model & input shape
     });
   }, []);
-
-  return (
-    <div className="App">
-      {loading.loading && <Loader> APP 실행 준비 중 {(loading.progress * 100).toFixed(2)}%</Loader>}
-      <div className="header">
-        <img src= "https://github.com/JISOO0213/Visual_impairment_assistant/raw/main/VisuAl.png"/>
-        
-        {/* <h1>위험 감지 음성 출력 App</h1> */}
-        <br/>
-        <p>
-          실시간 장애물 탐지 앱 
-        </p>
-        <p>
-          Serving : <code className="code">{modelName}+ 인도주행</code>
-        </p>
-        <br/>
-        <p>
-          <b>이 서비스는 크롬에서 사용할 수 없습니다. 이거 왜 됨??</b>
-        </p>
-        <br/>
+    return (
+      <div className="App">
+        {loading.loading && <Loader> APP 실행 준비 중 {(loading.progress * 100).toFixed(2)}%</Loader>}
+        <div className="header">
+          <img src= "https://github.com/JISOO0213/Visual_impairment_assistant/raw/main/VisuAl.png"/>
+          
+          {/* <h1>위험 감지 음성 출력 App</h1> */}
+          <br/>
+          <p>
+            실시간 장애물 탐지 앱 
+          </p>
+          <p>
+            Serving : <code className="code">{modelName}+ 인도주행</code>
+          </p>
+          <br/>
+          <p>
+            <b>이 서비스는 크롬에서 사용할 수 없습니다. 이거 왜 됨??</b>
+          </p>
+          <br/>
+        </div>
+  
+        <div className="content">
+          <video
+            autoPlay={true}
+            playsInline={true}
+            muted={true}
+            ref={cameraRef}
+            onPlay={() => detectVideo(cameraRef.current, model, classThreshold, canvasRef.current)}
+          />
+          <video
+            autoPlay={true}
+            playsInline={true}
+            muted={true}
+            ref={videoRef}
+            onPlay={() => detectVideo(videoRef.current, model, classThreshold, canvasRef.current)}
+          />
+          <canvas width={1920} height={1080} ref={canvasRef} />
+        </div>
+  
+        <ButtonHandler cameraRef={cameraRef} videoRef={videoRef} />
       </div>
-
-      <div className="content">
-        <video
-          autoPlay
-          muted
-          ref={cameraRef}
-          onPlay={() => detectVideo(cameraRef.current, model, classThreshold, canvasRef.current)}
-        />
-        <video
-          autoPlay
-          muted
-          ref={videoRef}
-          onPlay={() => detectVideo(videoRef.current, model, classThreshold, canvasRef.current)}
-        />
-        <canvas width={1920} height={1080} ref={canvasRef} />
-      </div>
-
-      <ButtonHandler cameraRef={cameraRef} videoRef={videoRef} />
-    </div>
-  );
-};
+    );
+  };
 
 export default App;

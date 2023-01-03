@@ -63,9 +63,9 @@ export const renderBoxes = (
       const center_x = x1 + width / 2;
       const center_y = y1 + height / 2;
 
-      ctx.beginPath();
-      ctx.arc(center_x, center_y, 10, 0, 2 * Math.PI);
-      ctx.stroke();
+      // ctx.beginPath();
+      // ctx.arc(center_x, center_y, 10, 0, 2 * Math.PI);
+      // ctx.stroke();
 
       if (klass == 'pedestrian'){
         if ((center_y >= ctx.canvas.height * 0.5) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
