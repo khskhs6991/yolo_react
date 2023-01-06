@@ -5,8 +5,6 @@ import Loader from "./components/loader";
 import ButtonHandler from "./components/btn-handler";
 import { detectImage, detectVideo } from "./utils/detect";
 import "./style/App.css";
-const audio = new Audio();
-audio.src = "https://github.com/khskhs6991/yolo_react/raw/master/ppip3.mp3";
 const App = () => {
   const [loading, setLoading] = useState({ loading: true, progress: 0 }); // loading state
   const [model, setModel] = useState({
@@ -95,14 +93,6 @@ const App = () => {
         </p>
         <br />
       </div>
-      {/* <button
-        type="button"
-        onClick={() => {
-          audio.play();
-        }}
-      >
-        <img src="https://github.com/JISOO0213/Visual_impairment_assistant/raw/main/VisuAl.png" />
-      </button> */}
     </div>
   );
 };

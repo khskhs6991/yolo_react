@@ -69,11 +69,23 @@ export const detectImage = async (imgSource, model, classThreshold, canvasRef) =
  */
 export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3); // get model width and height
-  let soundcheck = 4;
+  let first = 1;
+  let f_flag = false;
+  let l_flag = false;
+  let r_flag = false;
+  let w_flag = false;
+  let wi_flag = false;
   const warningAudio = new Audio();
   const warnAudio = new Audio();
-  warningAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/ppip3.mp3";
-  warnAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/ppip.mp3";
+  warningAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/manypedestrian.mp3";
+  warnAudio.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/frontpedestrian.mp3";
+
+  const leftcar = new Audio();
+  const rightcar = new Audio();
+  const frontcar = new Audio();
+  leftcar.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/leftcar.mp3";
+  rightcar.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/rightcar.mp3";
+  frontcar.src = "https://github.com/khskhs6991/khskhs6991.github.io/raw/main/frontcar.mp3";
   /**
    * Function to detect every frame from video
    */
@@ -92,11 +104,11 @@ export const detectVideo = (vidSource, model, classThreshold, canvasRef) => {
       const boxes_data = boxes.dataSync();
       const scores_data = scores.dataSync();
       const classes_data = classes.dataSync();
-      renderBoxes(warningAudio, warnAudio, soundcheck, canvasRef, classThreshold, boxes_data, scores_data, classes_data, [
+      renderBoxes(first, f_flag, l_flag, r_flag, w_flag, wi_flag, leftcar, rightcar, frontcar, warningAudio, warnAudio, canvasRef, classThreshold, boxes_data, scores_data, classes_data, [
         xRatio,
         yRatio,
       ]); // render boxes
-      soundcheck += 1;
+      first += 1;
       tf.dispose(res); // clear memory
     });
 

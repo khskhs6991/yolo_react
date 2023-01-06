@@ -17,37 +17,10 @@ const ButtonHandler = ({ cameraRef, videoRef }) => {
   };
   return (
     <div className="btn-container">
-      {/* Video Handler
-      <input
-        type="file"
-        accept="video/*"
-        style={{ display: "none" }}
-        onChange={(e) => {
-          if (streaming === "image") closeImage(); // closing image streaming
-          const url = URL.createObjectURL(e.target.files[0]); // create blob url
-          videoRef.current.src = url; // set video source
-          videoRef.current.addEventListener("ended", () => closeVideo()); // add ended video listener
-          videoRef.current.style.display = "block"; // show video
-          setStreaming("video"); // set streaming to video
-        }}
-        ref={inputVideoRef}
-      />
-      <button
-        onClick={() => {
-          // if not streaming
-          if (streaming === null || streaming === "image")
-            inputVideoRef.current.click();
-          // closing video streaming
-          else if (streaming === "video") closeVideo();
-          else alert(`웹캠을 끄고 실행해주세요. : ${streaming}`); // if streaming webcam
-        }}
-      >
-        {streaming === "video" ? "Close" : "Open"} Video
-      </button> */}
-      {/* Webcam Handler */}
       <button
         onClick={() => {
           audio.play();
+
           // if not streaming
           if (streaming === null || streaming === "image") {
             // closing image streaming

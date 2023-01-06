@@ -11,9 +11,17 @@ import labels from "./labels.json";
  */
 
 export const renderBoxes = (
+  first,
+  f_flag,
+  l_flag,
+  r_flag,
+  w_flag,
+  wi_flag,
+  leftcar,
+  rightcar,
+  frontcar,
   warningAudio,
   warnAudio,
-  soundcheck,
   canvasRef,
   classThreshold,
   boxes_data,
@@ -54,59 +62,10 @@ export const renderBoxes = (
       // draw box.
       ctx.fillStyle = Colors.hexToRgba(color, 0.2);
       ctx.fillRect(x1, y1, width, height);
-      ctx.strokeRect(ctx.canvas.width * 0.2, ctx.canvas.height * 0.5, ctx.canvas.width * 0.8 - ctx.canvas.width * 0.2, ctx.canvas.height * 0.5);
       // draw border box.
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(Math.min(ctx.canvas.width, ctx.canvas.height) / 200, 2.5);
       ctx.strokeRect(x1, y1, width, height);
-
-      const center_x = x1 + width / 2;
-      const center_y = y1 + height / 2;
-
-      // ctx.beginPath();
-      // ctx.arc(center_x, center_y, 10, 0, 2 * Math.PI);
-      // ctx.stroke();
-
-      if (klass == 'pedestrian'){
-        if ((center_y >= ctx.canvas.height * 0.45) && (ctx.canvas.width * 0.2 <= center_x <= ctx.canvas.width * 0.8)){
-          count += 1;
-          if ((count >= 3) && (soundcheck % 6 == 0)){
-            try {
-              warnAudio.pause();
-              warningAudio.play();
-              console.log("warningAudio");
-            } catch (error) {
-              console.log('재생되는 소리가 없습니다.');
-            }
-          }
-          else if((center_y >= ctx.canvas.height * 0.45) && (height >= ctx.canvas.height * 0.75)){
-            if (soundcheck % 4 == 0){
-              try {
-                warningAudio.pause();
-                warnAudio.play();
-                console.log("warnAudio");
-              } catch (error) {
-                console.log('재생되는 소리가 없습니다.');
-              }
-            }
-          }
-        }
-      }
-      else if (klass == 'car' || klass == 'bus' || klass == 'truck') {
-        if ((ctx.canvas.width * 0.45 <= center_x <= ctx.canvas.width * 0.55) && (height >= ctx.canvas.height * 0.15)){
-          console.log('차량이 전방에 있습니다.');
-        }
-        else if (y2 >= ctx.canvas.height * 0.7){
-          console.log('디폴트 값으로 차량이 있을 시 무조건 울립니다.');
-        }
-        else if ((center_x < 0.5) && (x2 <= ctx.canvas.width * 0.3) && (y2 <= ctx.canvas.height * 0.7) && (height >= ctx.canvas.height * 0.3)){
-          console.log('차량이 왼쪽 사이드에 있습니다.');
-        }
-        else if ((center_x >= 0.5) && (x1 >= ctx.canvas.width * 0.7) && (y2 <= ctx.canvas.height * 0.7) && (height >= ctx.canvas.height * 0.3)){
-          console.log('차량이 오른쪽 사이드에 있습니다.');
-        }
-      }
-
       // Draw the label background.
       ctx.fillStyle = color;
       const textWidth = ctx.measureText(klass + " - " + score + "%").width;
@@ -122,6 +81,128 @@ export const renderBoxes = (
       // Draw labels
       ctx.fillStyle = "#ffffff";
       ctx.fillText(klass + " - " + score + "%", x1 - 1, yText < 0 ? 0 : yText);
+
+      const center_x = x1 + width / 2;
+      const center_y = y1 + height / 2;
+
+
+      if ((klass == 'pedestrian') && (score > 40)){
+        // 사람 3명 이상
+        if (((ctx.canvas.width * 0.1 <= center_x) && (center_x <= ctx.canvas.width * 0.9)) && ((height >= ctx.canvas.height * 0.4) && (height < ctx.canvas.height * 0.7))){
+          count += 1;
+          if (count >= 3){
+            wi_flag = true;
+            w_flag = false;
+          }
+        }
+        // 바로 앞에 사람
+        else if(height >= ctx.canvas.height * 0.7){
+          w_flag = true;
+          wi_flag = false;
+        }
+        else{
+          w_flag = false;
+          wi_flag = false;
+        }
+
+        if (w_flag == true){
+          if(((warnAudio.ended == true) || (warningAudio.ended == true)) || (first == 1)){
+            warnAudio.play();
+            warningAudio.pause();
+            warningAudio.currentTime = 0;
+          }
+          else if(((warnAudio.ended == true) || (warningAudio.ended == true)) || (first != 1)){
+            warnAudio.play();
+            warningAudio.pause();
+            warningAudio.currentTime = 0;
+          }
+        }
+
+        else if (wi_flag == true){
+          if(((warnAudio.ended == true) || (warningAudio.ended == true)) || (first == 1)){
+            warnAudio.pause();
+            warningAudio.play();
+            warnAudio.currentTime = 0;
+          }
+          else if(((warnAudio.ended == true) || (warningAudio.ended == true)) || (first != 1)){
+            warnAudio.pause();
+            warningAudio.play();
+            warnAudio.currentTime = 0;
+          }
+        }
+      }
+      
+      
+      else if ((klass == 'car' || klass == 'bus' || klass == 'truck') && (score > 40)) {
+        if (((ctx.canvas.width * 0.4 <= center_x) && (center_x <= ctx.canvas.width * 0.6)) && (height >= ctx.canvas.height * 0.15)){
+          f_flag = true;
+          l_flag = false;
+          r_flag = false;
+        }
+        else if ((center_x < ctx.canvas.width * 0.4) && (height >= ctx.canvas.height * 0.2)){
+          f_flag = false;
+          l_flag = true;
+          r_flag = false;        
+        }
+
+        else if ((center_x > ctx.canvas.width * 0.6) && (height >= ctx.canvas.height * 0.2)){
+          f_flag = false;
+          l_flag = false;
+          r_flag = true;         
+        }
+
+        else{
+          f_flag = false;
+          l_flag = false;
+          r_flag = false;             
+        }
+
+        if (f_flag == true){
+          if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first == 1)){
+            frontcar.play();
+            leftcar.pause();
+            rightcar.pause();
+            leftcar.currentTime = 0;
+            rightcar.currentTime = 0;}
+          else if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first != 1)){
+            frontcar.play();
+            leftcar.pause();
+            rightcar.pause();
+            leftcar.currentTime = 0;
+            rightcar.currentTime = 0;}
+        }
+
+        else if (l_flag == true){
+          if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first == 1)){
+            frontcar.pause();
+            leftcar.play();
+            rightcar.pause();
+            frontcar.currentTime = 0;
+            rightcar.currentTime = 0;}
+          else if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first != 1)){
+            frontcar.pause();
+            leftcar.play();
+            rightcar.pause();
+            frontcar.currentTime = 0;
+            rightcar.currentTime = 0;}
+        }
+
+        else if (r_flag == true){
+          if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first == 1)){
+            rightcar.play();
+            leftcar.pause();
+            frontcar.pause();
+            frontcar.currentTime = 0;
+            leftcar.currentTime = 0;}
+          else if (((leftcar.ended == true) || (rightcar.ended == true) || (frontcar.ended == true)) || (first != 1)){
+            rightcar.play();
+            leftcar.pause();
+            frontcar.pause();
+            frontcar.currentTime = 0;
+            leftcar.currentTime = 0;}
+        }
+  
+      }
     }
   }
 };
